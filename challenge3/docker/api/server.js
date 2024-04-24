@@ -56,10 +56,11 @@ app.get('/api/stats', (req, res) => {
 
 // Create a connection to the MySQL database
 const pool = mysql.createPool({
-    host: env.DB_HOST, 
-    user: env.DB_USERNAME,
-    password: env.DB_PASSWORD,
-    database: env.DB_DATABASE
+    host: 'containerdb' || 'db',
+    user: env.DB_USERNAME || 'user',
+    password: env.DB_PASSWORD || 'password',
+    database: env.DB_DATABASE || 'database',
+    PORT: env.DB_PORT || '3306'
 });
 
 

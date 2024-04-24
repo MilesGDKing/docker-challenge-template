@@ -1,12 +1,42 @@
-version: '3.4'
+version: '3'
 
 services:
-  srv:
-    image: srv
-    build:
-      context: challenge3/docker/api
-      dockerfile: ./Dockerfile
+   nginx:
+    build: ./nginx
+    restart: always
+    image: nginximage
+    ports: 
+      -"8088:80"
+    depends_on:
+      - node_service
+    links:
+      - node_service
+
+  node_service: 
+    build: ./api
+    restart: always
+    image: nodeimage
+    ports: -"3000:3000"
     environment:
-      NODE_ENV: production
-    ports:
-      - 3000:3000
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    image: dbimage
+    build: ./db/
+    restart: always
+    container_name: containerdb
+    environment:
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      DB_ROOT_PASSWORD: "dbrootpassword45"
+    volumes:
+      - ./db/init/init.sql /docker-entrypoint-initdb.d/init.sql
+    
+
