@@ -66,7 +66,7 @@ const pool = mysql.createPool({
 
 // Route to get all books
 app.get('/api/books', (req, res) => {    
-    
+    console.log('this is a test', req, res);
     pool.getConnection((err, connection) => {
         if (err) {
             console.error('Error connecting to database: ' + err.stack);

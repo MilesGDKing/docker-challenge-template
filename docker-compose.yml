@@ -1,22 +1,23 @@
 version: '3'
 
 services:
-   nginx:
-    build: ./nginx
+  nginx:
+    build: C:\Users\mdolp\Desktop\OS\docker-challenge-template-main\challenge3\docker\nginx
     restart: always
     image: nginximage
     ports: 
-      -"8088:80"
+      - "8088:80"
     depends_on:
       - node_service
     links:
       - node_service
 
   node_service: 
-    build: ./api
+    build: C:\Users\mdolp\Desktop\OS\docker-challenge-template-main\challenge3\docker\api
     restart: always
     image: nodeimage
-    ports: -"3000:3000"
+    ports: 
+      - "3000:3000"
     environment:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${DB_USER}"
@@ -28,15 +29,13 @@ services:
 
   db:
     image: dbimage
-    build: ./db/
+    build: C:\Users\mdolp\Desktop\OS\docker-challenge-template-main\challenge3\docker\db
     restart: always
     container_name: containerdb
     environment:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${DB_USER}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
-      DB_ROOT_PASSWORD: "dbrootpassword45"
+      DB_ROOT_PASSWORD: "password"
     volumes:
-      - ./db/init/init.sql /docker-entrypoint-initdb.d/init.sql
-    
-
+      - ./db/init/init.sql:/docker-entrypoint-initdb.d/init.sql
