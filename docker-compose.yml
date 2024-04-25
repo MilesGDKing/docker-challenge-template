@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    build: challenge3\docker\nginx
+    build: ./nginx
     restart: always
     image: nginximage
     ports: 
@@ -13,7 +13,7 @@ services:
       - node_service
 
   node_service: 
-    build: challenge3\docker\api
+    build: ./api
     restart: always
     image: nodeimage
     ports: 
@@ -29,14 +29,14 @@ services:
 
   db:
     image: dbimage
-    build: challenge3\docker\db
+    build: ./db/
     restart: always
     container_name: containerdb
     environment:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${DB_USER}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
-      DB_ROOT_PASSWORD: "password"
+      MARIADB_ROOT_PASSWORD: "password"
     volumes:
       - ./docker/db/init/init.sql:/docker-entrypoint-initdb.d/init.sql
 
