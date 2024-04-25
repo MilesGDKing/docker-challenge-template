@@ -1,10 +1,21 @@
-FROM node:lts-alpine
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
-COPY . .
+# Use the official Node.js image as base
+FROM node:alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY docker/api/package*.json ./
+
+# # Install dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY docker/api/* .
+
+# Expose port 3000 to the outside world
 EXPOSE 3000
-RUN chown -R node /usr/src/app
-USER node
-CMD ["npm", "start"]
+
+# Command to run the application
+CMD ["node", "server.js"]
+# CMD ["sleep", "infinity"]
